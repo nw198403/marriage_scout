@@ -1,0 +1,612 @@
+/* 婚活スカウト 基本CSS
+   基本部品（色・フォント・ボタン・フォーム・カード）を共通で持ち、
+   会員用（body.layout-member）とカウンセラー用（body.layout-counselor）でレイアウトを分ける。 */
+
+:root {
+  --color-text: #2b2b2b;
+  --color-muted: #6b6b6b;
+  --color-bg: #faf7f5;
+  --color-card: #ffffff;
+  --color-line: #e6dfda;
+  --color-primary: #c2577a;       /* 会員用のアクセント */
+  --color-primary-dark: #a3436a;
+  --color-counselor: #2f5d7c;     /* カウンセラー用のアクセント */
+  --color-counselor-dark: #234a63;
+  --color-error: #b3261e;
+  --color-ok: #2e7d32;
+  --content-width: 1100px;   /* ヘッダー・本文カード・お知らせ帯など、ページ全体で共通の横幅 */
+}
+
+html { font-size: 93.75%; } /* 全体を少し小さめに（1rem=15px）。以下のrem指定はすべてこれに連動して縮小される */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "M PLUS 1", -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  font-weight: 400;
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.7;
+}
+
+a { color: var(--color-primary); }
+h1 { font-size: 1.2rem; margin: 0 0 1rem; }
+h2 { font-size: 1.05rem; margin: 1.5rem 0 .75rem; }
+
+/* ヘッダー・フッター */
+.site-header { background: var(--color-card); border-bottom: 1px solid var(--color-line); position: sticky; top: 0; z-index: 100; }
+.site-header .inner {
+  max-width: var(--content-width); margin: 0 auto; padding: .75rem 1rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+}
+.site-brand { display: flex; align-items: baseline; gap: .25rem .9rem; flex-wrap: wrap; }
+.site-tagline { color: var(--color-muted); font-size: .8rem; }
+.site-logo { font-weight: 700; color: var(--color-primary); text-decoration: none; font-size: 1.1rem; }
+
+/* site-nav：どんな画面幅でも絶対に2段にならないタブ帯。項目の幅とフォントサイズが
+   画面幅に応じて自動で縮み、常に横一列に収まる（はみ出す場合は末尾を…で省略） */
+.site-nav {
+  display: flex; flex-wrap: nowrap; align-items: center; justify-content: flex-end;
+  gap: .25rem; margin-left: auto;
+  flex: 1 1 260px; min-width: 0;
+}
+.site-nav a { text-decoration: none; }
+.site-nav a:not(.btn) {
+  display: inline-flex; align-items: center; justify-content: center;
+  flex: 0 1 auto; min-width: 0;
+  padding: .4rem .55rem; color: #fff; background: var(--color-primary);
+  border-radius: 6px; text-align: center;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-size: clamp(.76rem, 2.8vw, .88rem);
+}
+.site-nav a:not(.btn).nav-link-long { font-size: clamp(.68rem, 2.4vw, .78rem); }
+.site-nav a:not(.btn):hover { background: var(--color-primary-dark); }
+.site-nav a:not(.btn).is-active { background: var(--color-card); color: var(--color-primary); font-weight: 700; box-shadow: inset 0 0 0 1px var(--color-primary); }
+.site-nav a.btn { flex: 0 0 auto; }
+.nav-badge { display: inline-block; min-width: 1.1rem; padding: 0 .3rem; margin-left: .25rem; border-radius: 999px; background: var(--color-error); color: #fff; font-size: .7rem; line-height: 1.1rem; text-align: center; }
+@media (max-width: 700px) {
+  .site-nav { justify-content: stretch; width: 100%; margin-left: 0; flex-basis: 100%; }
+  .site-nav a:not(.btn) { padding: .35rem .2rem; }
+}
+.site-footer { text-align: center; color: var(--color-muted); font-size: .85rem; padding: 2rem 1rem; }
+
+/* 会員用：ゆったり・カード中心 */
+.layout-member .container { max-width: var(--content-width); margin: 2rem auto; padding: 0 1rem; }
+
+/* スカウト一覧（比較表）だけは横に広くして、表がより多く見えるようにする */
+.layout-member.page-scouts-wide .container { max-width: var(--content-width); margin: 2rem auto; padding: 0 1rem; }
+
+/* カウンセラー用：業務向けにシンプル・幅広 */
+.layout-counselor { --color-primary: var(--color-counselor); --color-primary-dark: var(--color-counselor-dark); }
+.layout-counselor .site-header { background: #f1f5f8; }
+.layout-counselor .container { max-width: var(--content-width); margin: 1.5rem auto; padding: 0 1rem; }
+.layout-counselor .card { border-radius: 4px; }
+
+/* 公開ページ（トップ・ログイン・登録） */
+.layout-public .container { max-width: 480px; margin: 2rem auto; padding: 0 1rem; }
+
+/* カード */
+.card {
+  background: var(--color-card); border: 1px solid var(--color-line);
+  border-radius: 12px; padding: 1.5rem; margin-bottom: 1.25rem;
+}
+
+/* フォーム */
+.form-row { margin-bottom: 1.5rem; }
+.form-row-pair { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+.form-row-pair > .form-row { flex: 1 1 200px; }
+.form-row-spacer { visibility: hidden; }
+label { display: block; font-weight: 600; margin-bottom: .25rem; font-size: .88rem; }
+/* 会員プロフィールの「自己紹介」「希望条件」は、長文入力欄の見出しなので、他の項目より控えめに標準の太さで表示する */
+label.label-normal { font-weight: 400; }
+.hint { color: var(--color-muted); font-size: .85rem; font-weight: 400; }
+.hint-1line { font-size: .62rem; white-space: nowrap; }
+input[type=text], input[type=email], input[type=password], textarea, select {
+  width: 100%; padding: .5rem .65rem; font-size: .92rem; font-family: inherit;
+  border: 1px solid var(--color-line); border-radius: 8px; background: #fff;
+}
+input:focus, textarea:focus, select:focus { outline: 2px solid var(--color-primary); outline-offset: 1px; }
+.radio-group label { font-weight: 400; display: inline-block; margin-right: 1rem; }
+
+
+/* ログインの会員／カウンセラー タブ切替：枠なし・チェック式 */
+.role-tabs {
+  display: flex; justify-content: center; gap: 5rem; margin-bottom: 1.25rem;
+}
+.role-tab {
+  display: flex; align-items: center; gap: .45rem;
+  padding: .3rem 0; background: none; border: 0;
+  font-size: .95rem; font-weight: 600; color: var(--color-muted); cursor: pointer;
+  transition: color .15s;
+}
+.role-tab::before {
+  content: ""; width: 1.05rem; height: 1.05rem; border-radius: 50%; flex: none; box-sizing: border-box;
+  border: 1.5px solid var(--color-line); background: #fff;
+  transition: border-color .15s, background .15s, box-shadow .15s;
+}
+.role-tab.active { color: var(--color-primary); }
+.role-tab.active::before {
+  border-color: var(--color-primary); background: var(--color-primary); box-shadow: inset 0 0 0 3px #fff;
+}
+
+/* ボタン */
+.btn {
+  display: inline-block; padding: .65rem 1.25rem; font-size: 1rem; font-weight: 600; font-family: inherit;
+  color: #fff; background: var(--color-primary); border: 0; border-radius: 999px;
+  cursor: pointer; text-decoration: none;
+}
+.btn:hover { background: var(--color-primary-dark); }
+.btn-block { display: block; width: 100%; text-align: center; }
+.btn-login { display: block; width: 50%; min-width: 160px; margin: 0 auto; text-align: center; }
+.btn-secondary { background: #fff; color: var(--color-primary); border: 1px solid var(--color-primary); }
+.btn-secondary:hover { background: #f6eef1; }
+
+/* メッセージ */
+.flash { padding: .75rem 1rem; border-radius: 8px; margin-bottom: 1rem; }
+.flash-error { background: #fdecea; color: var(--color-error); }
+.flash-ok { background: #e8f5e9; color: var(--color-ok); }
+.dev-box { background: #fff8e1; border: 1px dashed #d4a017; padding: .75rem 1rem; border-radius: 8px; font-size: .9rem; word-break: break-all; }
+
+.center { text-align: center; }
+.muted { color: var(--color-muted); }
+p.muted { font-size: .85rem; }
+
+/* ファイル・日付入力、リンク風ボタン */
+input[type=file], input[type=date] { font: inherit; max-width: 100%; }
+input[type=date] { padding: .6rem .75rem; border: 1px solid var(--color-line); border-radius: 8px; }
+.card h2:first-child { margin-top: 0; }
+.btn-link { background: none; border: none; padding: 0; color: var(--color-muted); text-decoration: underline; cursor: pointer; font: inherit; font-size: .9rem; }
+
+/* トップページ：1画面に収まるヒーロー */
+.home .container { max-width: none; margin: 0; padding: 0; }
+.hero {
+  position: relative; overflow: hidden; background: var(--color-bg);
+  height: calc(100vh - var(--hdr, 72px)); height: calc(100svh - var(--hdr, 72px)); min-height: 460px;
+  display: flex; align-items: center;
+}
+.hero::before { /* 写真は右側に置き、左へ向かって溶けるように薄くする */
+  content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 82%;
+  background: var(--hero-img) center 65% / cover no-repeat;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 45%);
+          mask-image: linear-gradient(to right, transparent 0%, #000 45%);
+  opacity: .6;
+}
+.hero-inner { position: relative; width: 100%; max-width: var(--content-width); margin: 0 auto; padding: 0 1rem; box-sizing: border-box; }
+.hero-text { max-width: 680px; }
+.hero-title { font-size: clamp(1.2rem, 5.2vw, 2rem); font-weight: 800; line-height: 1.5; margin: 0 0 1rem; text-align: left; }
+.hero-sub { font-size: clamp(.72rem, 2.6vw, .92rem); font-weight: 400; line-height: 1.6; margin: 0 0 2.75rem; text-align: left; text-shadow: 0 0 6px #fff, 0 0 6px #fff, 0 0 12px rgba(255,255,255,.8); }
+.hero-lead { color: var(--color-text); margin: 7.5rem 0 1rem; line-height: 1.8; font-size: .8rem; text-shadow: 0 0 6px #fff, 0 0 6px #fff, 0 0 12px rgba(255,255,255,.8); }
+.hero-actions { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: 3rem; }
+.hero-actions .btn { font-size: .85rem; padding: .55rem 1.1rem; }
+.hero-login { margin: 1rem 0 0; font-size: .85rem; }
+.steps { max-width: 900px; margin: 1.5rem auto 2rem; padding: 0 1rem; display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; gap: .5rem .75rem; box-sizing: border-box; }
+.step {
+  background: var(--color-card); border-radius: 16px; padding: 1.25rem 1.1rem; font-size: .85rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,.05);
+}
+.step-head { display: flex; align-items: center; gap: .55rem; margin-bottom: .5rem; }
+.step-head strong { font-size: .92rem; }
+.step-no {
+  display: inline-flex; width: 2rem; height: 2rem; flex: none; align-items: center; justify-content: center;
+  border-radius: 50%; background: var(--color-primary); color: #fff; font-weight: 800; font-size: 1rem;
+}
+.step .muted { display: block; line-height: 1.6; }
+.step-arrow { color: var(--color-primary); font-size: 1.4rem; font-weight: 700; text-align: center; }
+@media (max-width: 700px) {
+  .pc-only { display: none; }
+  .about-body p { text-wrap: balance; }
+  .hero { background-position: 75% 60%; height: auto; min-height: calc(100svh - var(--hdr, 110px)); padding: 2rem 0; }
+  .hero::before { width: 100%; opacity: .3; -webkit-mask-image: none; mask-image: none; }
+  .hero-text { max-width: none; text-align: center; }
+  .hero-actions { flex-direction: column; align-items: center; }
+  .hero-actions .btn { width: auto; min-width: 11rem; box-sizing: border-box; }
+  .steps { grid-template-columns: 1fr; }
+  .step-arrow { display: none; }
+}
+
+/* ヘッダーの横幅は、全ページ共通で本文カード（.container）と同じ --content-width にそろえる
+   （ログイン・登録など会員登録前のフォーム画面＝layout-publicだけ、本文は入力フォームとして
+   あえて狭く480pxにしている。ヘッダー自体は他ページと同じ幅で統一する） */
+
+/* ABOUT US */
+.about { background: #fff; padding: 3rem 1rem 2.5rem; }
+.about-inner { max-width: 720px; margin: 0 auto; }
+.section-label { color: var(--color-primary); font-weight: 700; letter-spacing: .2em; font-size: .85rem; margin: 0 0 .75rem; text-align: center; }
+.about-title { font-size: clamp(1.1rem, 2.8vw, 1.5rem); line-height: 1.6; text-align: center; margin: 0 0 1.5rem; }
+.about-body p { line-height: 1.85; margin: 0 0 1rem; text-align: center; font-size: .92rem; }
+.about-body mark { background: linear-gradient(transparent 62%, #fbe98a 62%); color: inherit; padding: 0 .1em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.how { padding: 3.5rem 1rem 1rem; }
+.how-heading { font-size: clamp(1rem, 2.6vw, 1.3rem); font-weight: 800; line-height: 1.6; text-align: center; max-width: 600px; margin: 0 auto .75rem; }
+.how-heading mark { background: linear-gradient(transparent 62%, #fbe98a 62%); color: inherit; padding: 0 .1em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.how-lead { max-width: 560px; margin: 0 auto; text-align: center; line-height: 1.75; color: var(--color-muted); font-size: .88rem; }
+.how .steps { margin-top: 1.75rem; }
+
+/* トップページ：1スクロール＝1画面（ABOUT US / HOW IT WORKS をそれぞれ1画面に） */
+html:has(body.home) { scroll-snap-type: y proximity; }
+.home .about, .home .how {
+  min-height: 100vh; min-height: 100svh; box-sizing: border-box;
+  display: flex; flex-direction: column; justify-content: center;
+  scroll-snap-align: start;
+}
+.home .about { padding-top: 2rem; padding-bottom: 2rem; }
+.home .how { min-height: auto; padding-top: 3rem; padding-bottom: 3rem; }
+.home .how .steps { width: 100%; }
+.how-cta { text-align: center; margin-top: 1.5rem; }
+.how-cta p { margin: 0 0 1rem; }
+/* トップページのHOW IT WORKS下にある登録ボタンは、他の場所の.btnより一回り大きく・少し下げて目立たせる */
+.how-cta .btn { width: 11rem; margin-top: .5rem; }
+
+/* 会員検索・スカウト */
+.filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .75rem; margin-bottom: 1rem; }
+.filter-grid label { font-weight: 600; font-size: .9rem; }
+.filter-grid select { margin-top: .25rem; }
+.filter-reset { margin-left: 1rem; font-size: .9rem; }
+.result-count { margin: 1rem 0 .5rem; }
+
+/* 検索条件の折りたたみ（会員検索）：クリックで開閉できる。デフォルトは開いた状態 */
+.filter-details { margin-top: .75rem; }
+.filter-summary {
+  cursor: pointer; font-weight: 700; font-size: 1rem; color: var(--color-text);
+  padding: .25rem 0; list-style: none;
+}
+.filter-summary::-webkit-details-marker { display: none; }
+.filter-summary::before { content: '▶'; display: inline-block; font-size: .7rem; margin-right: .5rem; transition: transform .15s; }
+.filter-details[open] .filter-summary::before { transform: rotate(90deg); }
+.filter-details .filter-form { margin-top: .75rem; }
+
+/* カウンセラーTop画面：プロフィール／相談所の状態行（ラベルと編集ボタンの間隔を確保） */
+.counselor-status-row { display: flex; align-items: center; gap: 1.25rem; margin-bottom: .75rem; flex-wrap: wrap; }
+.counselor-status-row:last-child { margin-bottom: 0; }
+.scout-status-filter { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.scout-status-filter label { font-weight: 600; font-size: .9rem; display: flex; align-items: center; gap: .5rem; }
+.scout-status-filter select { margin: 0; width: auto; }
+.member-card-head { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+.member-card-name { font-size: 1.1rem; font-weight: 700; }
+
+/* カウンセラーの写真（会員向け画面：一覧・比較・詳細） */
+.counselor-photo-sm {
+  width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
+  border: 1px solid var(--color-line); background: #f7f4f2; flex: 0 0 auto; display: inline-block;
+}
+.counselor-photo-lg {
+  width: 96px; height: 96px; border-radius: 50%; object-fit: cover;
+  border: 1px solid var(--color-line); background: #f7f4f2; flex: 0 0 auto;
+}
+.counselor-photo-placeholder { background: #f7f4f2; }
+.counselor-detail-head { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; margin-bottom: .5rem; }
+.counselor-detail-head h1 { margin-bottom: .35rem; }
+.badge { display: inline-block; font-size: .78rem; padding: .1rem .55rem; border-radius: 999px; background: var(--color-line); color: var(--color-text); }
+.badge-now { background: var(--color-primary); color: #fff; }
+.badge-within3m { background: #f3d9e2; }
+.badge-sent { background: #e3efe6; }
+.badge-important { background: var(--color-error); color: #fff; font-weight: 700; }
+
+/* 重要なお知らせ（会員トップ・ヘッダー直下）：評価のお願い／契約確認／スカウト受領。
+   本文の.containerより外側（body直下）に置くが、中身（.notice-banner-inner）はヘッダー・本文カードと
+   同じ横幅・中央寄せにそろえる（ヘッダーの横幅が画面幅いっぱいだった頃の名残で、以前は画面幅いっぱいに
+   広げていたが、ヘッダーが本文幅に揃えられたため、お知らせ側もそれに合わせる） */
+.notice-banner { background: var(--color-card); border-bottom: 1px solid var(--color-line); }
+.notice-banner-inner { max-width: var(--content-width); margin: 0 auto; padding: 0 1rem; }
+.notice-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: .65rem 0; border-top: 1px solid var(--color-line);
+}
+.notice-row:first-child { border-top: 0; }
+.notice-row-text { min-width: 0; }
+.notice-row-top { display: flex; align-items: center; gap: .5rem; margin-bottom: .25rem; flex-wrap: wrap; }
+.notice-title { font-size: .9rem; font-weight: 700; }
+.notice-desc { font-size: .8rem; color: var(--color-muted); }
+.notice-row-btn { flex: 0 0 auto; }
+
+/* journey-bar：会員の婚活の進み具合（プロフィール登録／スカウトを比較／面談して決定）を、
+   ヘッダー直下に画面幅いっぱいで出す簡易ステップバー。preMain経由でnotice-bannerと同じ位置に置く */
+.journey-bar { background: var(--color-card); border-bottom: 1px solid var(--color-line); }
+.journey-bar-inner {
+  max-width: var(--content-width); margin: 0 auto; padding: .6rem 1rem;
+  display: flex; align-items: center; justify-content: center; gap: .6rem; flex-wrap: wrap;
+}
+.journey-step { display: flex; align-items: center; gap: .4rem; color: var(--color-muted); }
+.journey-step-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 1.5rem; height: 1.5rem; border-radius: 50%; font-size: .78rem; font-weight: 700;
+  border: 1px solid var(--color-line); color: var(--color-muted); background: #fff;
+}
+.journey-step-label { font-size: .82rem; }
+.journey-step.is-done .journey-step-num { background: var(--color-line); border-color: var(--color-line); color: var(--color-muted); }
+.journey-step.is-current .journey-step-num { background: var(--color-primary); border-color: var(--color-primary); color: #fff; }
+.journey-step.is-current .journey-step-label { color: var(--color-text); font-weight: 700; }
+.journey-step-arrow { color: var(--color-line); font-size: .8rem; }
+@media (max-width: 700px) {
+  .journey-bar-inner { gap: .3rem; }
+  .journey-step-label { display: none; }
+  .journey-step.is-current .journey-step-label { display: inline; }
+}
+.tag-list { display: flex; flex-wrap: wrap; gap: .35rem; margin: .5rem 0; }
+.tag { font-size: .8rem; padding: .1rem .6rem; border: 1px solid var(--color-line); border-radius: 999px; background: #fff; }
+.pager { display: flex; gap: 1rem; justify-content: center; align-items: center; margin: 1.5rem 0; }
+
+/* 掲載審査 */
+.approval { border: 1px solid var(--color-line); border-radius: 10px; padding: .75rem 1rem; margin: 1rem 0; background: #fffaf0; }
+.approval p { margin: .25rem 0 0; font-size: .9rem; }
+.approval-approved { background: #eef7f0; }
+.approval-rejected { background: #fdf0f0; }
+
+/* カウンセラープロフィール：表示名・所属・勤務先とプロフィール写真の横並び */
+.static-value { margin: 0; padding: .5rem .65rem; font-size: .92rem; border: 1px solid var(--color-line); border-radius: 8px; background: #f7f4f2; }
+.profile-photo-row { display: flex; gap: 2.5rem; align-items: flex-start; flex-wrap: wrap; }
+.profile-photo-row-fields { flex: 1 1 28rem; max-width: 34rem; }
+.profile-photo-row-photo { flex: 0 0 auto; }
+.profile-photo-row-photo .form-row { margin-bottom: 0; }
+.profile-photo-row-photo label { font-size: 1rem; font-weight: 600; line-height: 1.7; margin-bottom: .25rem; }
+.profile-photo-box {
+  position: relative;
+  width: 200px; height: 200px; border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--color-line); background: #f7f4f2;
+  display: flex; align-items: center; justify-content: center; margin-bottom: .5rem;
+}
+.profile-photo-preview { width: 100%; height: 100%; object-fit: cover; display: block; }
+.profile-photo-placeholder { color: var(--color-muted); font-size: .85rem; text-align: center; padding: 0 .5rem; }
+.profile-photo-row-photo input[type=file] { width: 200px; font-size: .8rem; }
+.photo-remove-btn {
+  position: absolute; top: 8px; right: 8px; width: 28px; height: 28px;
+  border-radius: 50%; border: 0; background: rgba(20, 20, 20, .6); color: #fff;
+  font-size: 1.1rem; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity .15s, background .15s;
+}
+.profile-photo-box:hover .photo-remove-btn,
+.photo-remove-btn:focus { opacity: 1; }
+.photo-remove-btn:hover { background: rgba(178, 38, 30, .85); }
+.badge-pending { background: #fbe98a; }
+.badge-approved { background: #cfe8d5; }
+.badge-rejected { background: #f5c9c9; }
+.badge-withdrawn { background: #d9d9d9; color: #555; }
+table.kv { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+table.kv th { text-align: left; width: 9rem; color: var(--color-muted); font-weight: 600; padding: .4rem .5rem; vertical-align: top; }
+table.kv td { padding: .4rem .5rem; word-break: break-all; }
+
+/* スカウト比較（Excel風の表：カウンセラーを列ではなく行にして、人数が増えても横にはみ出さないようにする）
+   列幅はPHP側のcolgroupで固定（table-layout:fixedで、列ごとに指定した幅どおりにそろう）
+   枠線・フォントサイズは table.sheet の基本値より細め・小さめに上書き（他ページの table.sheet には影響させない）。
+   ※以前は td/th に overflow:hidden を付けていたが、border-collapse との組み合わせで
+     行によって枠線の太さがずれて見える不具合があったため撤去し、折り返し・固定列幅の方だけで
+     はみ出しを防ぐようにした。
+   ※さらに、1列目（カウンセラー欄）の td 自体に display:flex を付けていたことが、より根本的な原因
+     だったと判明。td を直接フレックスにすると、そのtdはもう「表のセル」として行の高さいっぱいに
+     伸びず、中身の高さだけで箱が決まってしまう（ブラウザが裏で本来のセルを別に生成し、見た目の
+     枠線・背景がその中身サイズの箱の方に付いてしまう）。そのため、バッジが2行になるなどで行が
+     高くなると、本来の行の下端と、中身だけの箱の下端がずれて、上下の枠線が二重に見えたり、右側の
+     枠線が短く見えたりしていた。td自体はふつうのセルのままにし、中の写真・名前・バッジ部分だけを
+     div.sheet-name-inner でくるんでflexにすることで、tdは他のセルと同じく行の高さいっぱいに伸びる
+     ようにして解消した。 */
+table.sheet.compare-sheet {
+  table-layout: fixed;
+  font-size: .78rem;
+}
+table.sheet.compare-sheet th,
+table.sheet.compare-sheet td {
+  border: 1px solid var(--color-line);
+  padding: .35rem .55rem;
+  vertical-align: middle;
+}
+table.sheet td.sheet-name-cell { white-space: normal; word-break: break-all; }
+.sheet-name-inner { display: flex; align-items: center; gap: .5rem; }
+.sheet-name-cell .badge { margin-top: .2rem; }
+.sheet-name-text { min-width: 0; flex: 1 1 auto; line-height: 1.45; }
+.sheet-name-counselor { font-size: .88em; color: var(--color-muted); }
+table.sheet td.wrap-cell { white-space: normal; word-break: break-all; }
+table.sheet.compare-sheet td.cell-sm { font-size: .88em; }
+.cell-sub { font-size: .85em; color: var(--color-muted); }
+.cell-taglist { margin: 0; padding-left: 1.1rem; }
+.cell-taglist li { margin: .15rem 0; }
+.is-dim { opacity: .6; }
+
+/* 面談の候補日時 */
+.slot-row { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .6rem .8rem; border: 1px solid var(--color-line); border-radius: 10px; margin-bottom: .5rem; background: #fff; }
+.slot-row-wide { align-items: flex-start; flex-wrap: wrap; padding: .5rem .7rem; margin-bottom: .4rem; }
+.slot-row-wide > div { flex: 1 1 260px; }
+.slot-row-wide input[type=text] { margin-top: .4rem; width: 100%; }
+.btn-small { padding: .35rem .9rem; font-size: .85rem; }
+
+/* カウンセラー：面談カード全体を、少しコンパクトなフォントサイズで揃える */
+.interview-card { font-size: .9rem; }
+.interview-card p.muted { margin-bottom: .7rem; }
+
+/* カウンセラー：候補日時の入力を、Excelのような表（候補①②③・日付・時間帯・所要時間・方法）にする */
+table.slot-table { border-collapse: collapse; width: 100%; background: #fff; font-size: .88rem; margin-bottom: .3rem; }
+table.slot-table th, table.slot-table td { border: 1px solid var(--color-line); padding: .4rem .55rem; text-align: left; vertical-align: middle; }
+table.slot-table thead th { background: #f2eeeb; font-weight: 600; white-space: nowrap; }
+table.slot-table tbody th { background: #f8f5f2; font-weight: 600; white-space: nowrap; width: 4rem; }
+table.slot-table select, table.slot-table input[type=date] { font-size: .86rem; padding: .25rem .35rem; }
+table.slot-table .radio-group { display: flex; flex-wrap: wrap; gap: 0 .7rem; }
+table.slot-table .radio-group label { margin-right: 0; font-weight: 400; white-space: nowrap; }
+.time-range { display: flex; align-items: center; gap: .35rem; }
+.time-range select { width: auto; }
+.slot-extra-row td { background: #fbfaf8; }
+.slot-extra-row .form-row { margin-bottom: 0; }
+.slot-extra-row .form-row + .form-row { margin-top: .5rem; }
+.slot-optional-body { display: none; }
+.slot-optional-body.is-open { display: table-row-group; }
+
+.interview-card .slot-shared-fields { display: none; }
+.interview-card.manage-open .slot-shared-fields { display: block; }
+.interview-card .slot-row-edit-fields { display: none; }
+.interview-card.manage-open .slot-row-summary { display: none; }
+.interview-card.manage-open .slot-row-edit-fields { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.interview-card .slot-row-edit-fields input[type=date],
+.interview-card .slot-row-edit-fields select { font-size: .85rem; padding: .3rem .4rem; }
+.interview-card .slot-row-delete { white-space: nowrap; flex-shrink: 0; margin-left: auto; }
+.slot-toggle-row { margin: .4rem 0 .6rem; }
+.slot-note-row { margin: .6rem 0 .3rem; }
+.slot-note-row textarea { width: 100%; resize: vertical; font: inherit; font-size: .88rem; box-sizing: border-box; }
+
+/* 会員：候補の時間帯から、具体的な開始時刻を選ぶプルダウン（隣に終了時刻を自動表示） */
+.slot-time-choice { margin: .3rem 0; display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; font-size: .85rem; color: var(--color-muted); }
+.slot-time-choice label { display: flex; align-items: center; gap: .4rem; }
+.slot-time-choice select { width: auto; }
+.slot-time-choice .slot-end-preview { font-size: 1rem; font-weight: 400; color: var(--color-text); }
+.slot-row-wide .slot-time-choice + .btn { margin-top: .3rem; }
+
+/* 対応エリアの選択 */
+.area-tools { margin: .25rem 0 .5rem; display: flex; gap: .5rem; }
+.area-region { margin-bottom: .6rem; padding: .5rem .75rem; border: 1px solid var(--color-line); border-radius: 10px; background: #fff; }
+.area-region-name { font-weight: 700; display: block; margin-bottom: .25rem; }
+
+/* カウンセラーに公開される項目の印（*） */
+.pub { color: var(--color-primary); font-weight: 700; }
+.card p.muted small { font-size: .8rem; }
+
+/* 保存ボタンを横に並べる（幅いっぱいにしない） */
+.form-actions { display: flex; gap: .8rem; flex-wrap: wrap; justify-content: center; margin-top: 3rem; }
+.form-actions .btn { width: 16rem; text-align: center; }
+.form-actions-note { text-align: center; margin-top: .8rem; }
+.hint-tight { margin-top: .15rem; }
+
+/* 運営用：Excelのような表（一覧・詳細） */
+.layout-admin .container { max-width: var(--content-width); margin: 1.5rem auto; padding: 0 1rem; }
+.layout-admin .card { border-radius: 4px; }
+.sheet-wrap { overflow-x: auto; }
+table.sheet { border-collapse: collapse; width: 100%; background: #fff; font-size: .92rem; }
+table.sheet th, table.sheet td { border: 1px solid var(--color-line); padding: .4rem .7rem; text-align: left; vertical-align: middle; }
+table.sheet thead th { background: #f2eeeb; font-weight: 600; white-space: nowrap; }
+table.sheet td { white-space: nowrap; }
+table.sheet tbody tr.row-link { cursor: pointer; }
+table.sheet tbody tr.row-link:hover { background: #f7f3f0; }
+table.sheet td a { color: inherit; font-weight: 600; text-decoration: none; }
+table.sheet td a:hover { text-decoration: underline; }
+table.sheet .badge { font-size: .8rem; padding: .1rem .6rem; }
+/* 詳細：4列の枠つき表 */
+table.sheet-detail th { background: #f7f3f0; color: var(--color-muted); font-weight: 600; white-space: nowrap; width: 1%; }
+table.sheet-detail td { white-space: normal; word-break: break-all; }
+table.sheet-detail td.nowrap { white-space: nowrap; }
+.admin-detail h1 { font-size: 1.3rem; margin: .4rem 0 .6rem; display: flex; align-items: center; gap: .8rem; flex-wrap: wrap; }
+.admin-detail .back-link { margin: 0; font-size: .9rem; }
+.admin-detail .review-box { margin-top: .9rem; padding-top: .7rem; border-top: 1px solid var(--color-line); }
+.admin-detail .review-box .form-row { margin: .6rem 0 0; }
+.admin-detail .review-box .hint { margin: 0 0 .5rem; }
+.admin-detail .review-buttons { display: flex; gap: .8rem; }
+
+/* 吹き出し形式の補足説明（ホバー／フォーカスで表示。クリックせずに済むように上に詰める） */
+.info-tip { position: relative; display: inline-flex; }
+.info-tip-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 1.3rem; height: 1.3rem; border-radius: 50%;
+  background: var(--color-line); color: var(--color-muted);
+  font-size: .8rem; font-weight: 700; line-height: 1; cursor: help;
+}
+.info-tip-bubble {
+  display: none;
+  position: absolute; z-index: 20; top: 140%; left: 0;
+  width: 22rem; max-width: 70vw;
+  background: #333; color: #fff; font-size: .8rem; font-weight: 400;
+  line-height: 1.6; padding: .7rem .9rem; border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.18);
+}
+.info-tip-bubble::before {
+  content: ""; position: absolute; bottom: 100%; left: 1rem;
+  border: 6px solid transparent; border-bottom-color: #333;
+}
+.info-tip:hover .info-tip-bubble, .info-tip:focus .info-tip-bubble, .info-tip:focus-within .info-tip-bubble { display: block; }
+
+/* レビュー・星評価 */
+.stars { color: #e0a72e; letter-spacing: .1em; }
+.stars-num { font-weight: 600; }
+.stars-count { font-weight: 400; }
+.star-select label { margin-right: .9rem; }
+.review-item { border: 1px solid var(--color-line); border-radius: 10px; padding: 1rem 1.25rem; margin: 0 0 1rem; background: #fff; }
+.review-item:last-child { margin-bottom: 0; }
+.review-item p { margin: .2rem 0; }
+.review-item-date { margin-bottom: .5rem !important; }
+.review-item-body { display: flex; gap: 1.5rem; align-items: flex-start; }
+.review-item-scores { flex: 0 0 11rem; }
+.review-item-comment { flex: 1 1 auto; min-width: 0; font-size: .85rem; }
+.review-item-comment p:first-child { margin-top: 0; }
+@media (max-width: 700px) {
+  .review-item-body { flex-direction: column; gap: .5rem; }
+  .review-item-scores { flex: 1 1 auto; }
+}
+.review-disclaimer { font-size: .75rem; font-weight: 400; color: var(--color-muted); margin-left: .5rem; }
+.review-stat-row { display: flex; align-items: center; gap: .5rem; font-size: .75rem; }
+.review-stat-label { color: var(--color-muted); min-width: 8.5rem; }
+
+/* スカウトへの応答（受ける／話を聞いてみる／辞退する）を横並びに */
+.scout-actions { display: flex; gap: .6rem; flex-wrap: wrap; align-items: center; margin-top: .5rem; }
+
+/* 画面には出さないが、スクリーンリーダーには読ませるラベル */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* メッセージ（チャット） */
+.chat-thread {
+  max-height: 420px; overflow-y: auto; display: flex; flex-direction: column; gap: .6rem;
+  padding: .75rem; margin-bottom: .9rem; background: var(--color-bg); border-radius: 10px;
+}
+/* LINEのように、相手（theirs）は左にアバター＋ふきだし、自分（mine）は右にふきだしのみ。
+   .chat-row が .chat-thread の直接の子（flexアイテム）になり、その中にアバターとふきだしを横並びで入れる。 */
+.chat-row { display: flex; align-items: flex-end; gap: .4rem; max-width: 80%; }
+.chat-row-theirs { align-self: flex-start; }
+.chat-row-mine { align-self: flex-end; justify-content: flex-end; }
+.chat-avatar { width: 30px; height: 30px; flex: 0 0 auto; margin-bottom: .1rem; }
+/* 会員側には写真登録がないため、カウンセラー画面では相手（会員）のアバターの代わりに
+   「Nさん」のような、ニックネームの頭文字＋さん、の丸みを帯れたバッジを出す */
+.chat-avatar-initial {
+  display: flex; align-items: center; justify-content: center; flex: 0 0 auto; margin-bottom: .1rem;
+  min-width: 30px; height: 30px; padding: 0 .45rem; border-radius: 15px;
+  background: var(--color-primary); color: #fff; font-size: .68rem; font-weight: 700; white-space: nowrap;
+}
+.chat-bubble { min-width: 0; padding: .5rem .75rem; border-radius: 12px; background: #fff; border: 1px solid var(--color-line); }
+.chat-bubble-mine { background: var(--color-primary); border-color: var(--color-primary); color: #fff; }
+.chat-bubble-mine .muted { color: rgba(255,255,255,.8); }
+.chat-bubble-mine a { color: #fff; text-decoration: underline; }
+.chat-bubble-body { margin: 0 0 .25rem; white-space: pre-wrap; }
+.chat-bubble-attachment { margin: 0 0 .25rem; font-size: .9rem; }
+.chat-bubble-time { margin: 0; font-size: .72rem; display: flex; gap: .4rem; align-items: baseline; justify-content: flex-end; }
+.chat-bubble-theirs .chat-bubble-time { justify-content: flex-start; }
+.chat-read { font-size: .7rem; }
+.chat-date-sep { align-self: center; font-size: .78rem; color: var(--color-muted); background: #fff; border: 1px solid var(--color-line); border-radius: 999px; padding: .15rem .8rem; margin: .3rem 0; }
+/* メッセージの編集・削除：自分のメッセージだけに「編集」「削除」を出す。
+   編集は吹き出し内でテキストを直接書き換える（JSで表示切り替え）。削除はソフトデリートで、
+   相手・自分どちらの画面にも「このメッセージは削除されました」というプレースホルダーを残す。 */
+.chat-bubble-time .btn-link { font-size: .72rem; color: var(--color-muted); opacity: .85; }
+.chat-bubble-mine .chat-bubble-time .btn-link { color: rgba(255,255,255,.9); }
+.chat-edited { opacity: .85; }
+.chat-edit-form { margin: 0 0 .35rem; }
+.chat-edit-textarea { width: 100%; min-height: 3.4em; font-size: .9rem; resize: vertical; }
+.chat-edit-actions { display: flex; gap: .6rem; margin-top: .3rem; }
+.chat-bubble-deleted-text { font-style: italic; margin: 0; }
+.chat-bubble-mine.chat-bubble-deleted { background: #fff; border-color: var(--color-line); color: var(--color-text); }
+.chat-bubble-mine.chat-bubble-deleted .muted,
+.chat-bubble-mine.chat-bubble-deleted .chat-bubble-deleted-text { color: var(--color-muted); }
+
+/* メッセージ一覧（スレッド一覧） */
+.message-row {
+  display: flex; align-items: center; gap: .75rem; padding: .8rem 1rem; margin-bottom: .5rem;
+  background: #fff; border: 1px solid var(--color-line); border-radius: 10px; text-decoration: none; color: inherit;
+}
+.message-row.is-unread { border-color: var(--color-primary); background: #fffaf9; }
+.message-row-body { flex: 1 1 auto; min-width: 0; }
+.message-row-top { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; }
+.message-row-name { font-weight: 700; }
+.message-row.is-unread .message-row-name { color: var(--color-primary); }
+.message-row-time { font-size: .78rem; color: var(--color-muted); white-space: nowrap; flex: 0 0 auto; }
+.message-row-preview { margin: .2rem 0 0; font-size: .88rem; color: var(--color-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.message-row.is-unread .message-row-preview { color: var(--color-text); }
+.message-row-badge { flex: 0 0 auto; }
+/* メッセージ入力欄：LINE・iMessageのような「＋」ボタンでファイル添付を開くスタイル。
+   ネイティブのファイル選択(input[type=file])は画面上には出さず、＋ボタンのクリックで
+   JavaScript経由で開く（assets/css/style.cssはこの見た目だけを担当。挙動はchat.php側のscript）。 */
+.chat-input-row { display: flex; align-items: flex-end; gap: .5rem; }
+.chat-input-row textarea { flex: 1 1 auto; width: auto; resize: vertical; }
+.chat-attach-btn {
+  flex: 0 0 auto; width: 2.35rem; height: 2.35rem; padding: 0; margin-bottom: .1rem;
+  border: 1px solid var(--color-line); border-radius: 50%; background: #fff; color: var(--color-primary);
+  font-size: 1.4rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.chat-attach-btn:hover { background: #f6eef1; }
+.chat-attach-btn.is-active { background: var(--color-primary); border-color: var(--color-primary); color: #fff; }
+.chat-file-input { display: none; }
+.chat-send-btn { flex: 0 0 auto; margin-bottom: .1rem; }
+.chat-attach-preview { display: flex; align-items: center; gap: .5rem; font-size: .85rem; color: var(--color-muted); margin: .5rem 0 0; }
+.scout-actions form { margin: 0; }
